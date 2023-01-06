@@ -10,3 +10,4 @@ Visualise common Path-Finding Algorithms in Action!
 - Run main.py.
 
 ![Helper](helper.png?raw=true "Title")
+![Screenshot](Screenshot.png?raw=true "Title")
