@@ -2,6 +2,7 @@ import pygame as pygame
 from a_star import a_star
 from dijkstra import dijkstra
 from bidirectional import bidirectional
+import asyncio
 
 
 WIDTH = 600
@@ -198,7 +199,7 @@ def get_clicked_pos(pos, rows, width):
     return row, col
 
 
-def main(win, width):
+async def main(win, width):
     rows = 50
     grid = make_grid(rows, width)
 
@@ -293,8 +294,10 @@ def main(win, width):
                     end = None
                     grid = make_grid(rows, width)
                     done = False
+        
+        await asyncio.sleep(0)
 
     pygame.quit()
 
 
-main(WIN, WIDTH)
+asyncio.run(main(WIN, WIDTH))
