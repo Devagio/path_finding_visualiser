@@ -124,7 +124,7 @@ def draw_grid(win, rows, width):
         pygame.draw.line(win, GREY, (i * gap, 0), (i * gap, width))
 
 
-def draw(win, grid, rows, width):
+async def draw(win, grid, rows, width):
     win.fill(WHITE)
 
     for row in grid:
@@ -134,9 +134,10 @@ def draw(win, grid, rows, width):
     draw_grid(win, rows, width)
 
     pygame.display.update()
+    await asyncio.sleep(0)
 
 
-def render_help(win):
+async def render_help(win):
     win.fill(GREY)
 
     title_font = pygame.font.Font("freesansbold.ttf", 32)
@@ -187,6 +188,7 @@ def render_help(win):
     win.blit(description, (200, 560))
 
     pygame.display.update()
+    await asyncio.sleep(0)
 
 
 def get_clicked_pos(pos, rows, width):
