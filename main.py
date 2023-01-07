@@ -124,7 +124,7 @@ def draw_grid(win, rows, width):
         pygame.draw.line(win, GREY, (i * gap, 0), (i * gap, width))
 
 
-async def draw(win, grid, rows, width):
+def draw(win, grid, rows, width):
     win.fill(WHITE)
 
     for row in grid:
@@ -134,10 +134,9 @@ async def draw(win, grid, rows, width):
     draw_grid(win, rows, width)
 
     pygame.display.update()
-    await asyncio.sleep(0)
 
 
-async def render_help(win):
+def render_help(win):
     win.fill(GREY)
 
     title_font = pygame.font.Font("freesansbold.ttf", 32)
@@ -188,7 +187,6 @@ async def render_help(win):
     win.blit(description, (200, 560))
 
     pygame.display.update()
-    await asyncio.sleep(0)
 
 
 def get_clicked_pos(pos, rows, width):
@@ -263,7 +261,7 @@ async def main(win, width):
                         for spot in row:
                             spot.update_neighbours(grid)
 
-                    path_exist = a_star(lambda: draw(win, grid, rows, width), grid, start, end)
+                    path_exist = await a_star(lambda: draw(win, grid, rows, width), grid, start, end)
                     done = True
 
                     if not path_exist:
@@ -274,7 +272,7 @@ async def main(win, width):
                         for spot in row:
                             spot.update_neighbours(grid)
 
-                    path_exist = bidirectional(lambda: draw(win, grid, rows, width), grid, start, end)
+                    path_exist = await bidirectional(lambda: draw(win, grid, rows, width), grid, start, end)
                     done = True
 
                     if not path_exist:
@@ -285,7 +283,7 @@ async def main(win, width):
                         for spot in row:
                             spot.update_neighbours(grid)
 
-                    path_exist = dijkstra(lambda: draw(win, grid, rows, width), grid, start, end)
+                    path_exist = await dijkstra(lambda: draw(win, grid, rows, width), grid, start, end)
                     done = True
 
                     if not path_exist:

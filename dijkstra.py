@@ -1,15 +1,18 @@
 import pygame
+import asyncio
 from queue import PriorityQueue
 
 
-def reconstruct_path(came_from, current, do_draw):
+async def reconstruct_path(came_from, current, do_draw):
     while current in came_from:
         current = came_from[current]
         current.make_path()
         do_draw()
+        await asyncio.sleep(0)
+        
 
 
-def dijkstra(do_draw, grid, start, end):
+async def dijkstra(do_draw, grid, start, end):
     count = 0
     open_set = PriorityQueue()
     open_set.put((0, count, start))
@@ -28,7 +31,7 @@ def dijkstra(do_draw, grid, start, end):
         open_set_hash.remove(current)
 
         if current == end:
-            reconstruct_path(came_from, end, do_draw)
+            await reconstruct_path(came_from, end, do_draw)
             end.make_end()
             start.make_start()
             return True
@@ -44,6 +47,7 @@ def dijkstra(do_draw, grid, start, end):
                     neighbour.make_open()
 
         do_draw()
+        await asyncio.sleep(0)
 
         if current != start:
             current.make_closed()

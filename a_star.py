@@ -1,4 +1,5 @@
 import pygame
+import asyncio
 from queue import PriorityQueue
 
 
@@ -6,14 +7,15 @@ def h(p1, p2):
     return abs(p1[0]-p2[0]) + abs(p1[1]-p2[1])
 
 
-def reconstruct_path(came_from, current, do_draw):
+async def reconstruct_path(came_from, current, do_draw):
     while current in came_from:
         current = came_from[current]
         current.make_path()
         do_draw()
+        await asyncio.sleep(0)
 
 
-def a_star(do_draw, grid, start, end):
+async def a_star(do_draw, grid, start, end):
     count = 0
     open_set = PriorityQueue()
     open_set.put((0, count, start))
@@ -34,7 +36,7 @@ def a_star(do_draw, grid, start, end):
         open_set_hash.remove(current)
 
         if current == end:
-            reconstruct_path(came_from, end, do_draw)
+            await reconstruct_path(came_from, end, do_draw)
             end.make_end()
             start.make_start()
             return True
@@ -51,6 +53,7 @@ def a_star(do_draw, grid, start, end):
                     neighbour.make_open()
 
         do_draw()
+        await asyncio.sleep(0)
 
         if current != start:
             current.make_closed()

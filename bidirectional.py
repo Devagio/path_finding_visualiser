@@ -1,15 +1,17 @@
 import pygame
+import asyncio
 from queue import PriorityQueue
 
 
-def reconstruct_path(came_from, current, do_draw):
+async def reconstruct_path(came_from, current, do_draw):
     while current in came_from:
         current = came_from[current]
         current.make_path()
         do_draw()
+        await asyncio.sleep(0)
 
 
-def bidirectional(do_draw, grid, start, end):
+async def bidirectional(do_draw, grid, start, end):
     count_1 = 0
     count_2 = 0
     open_set_1 = PriorityQueue()
@@ -37,8 +39,8 @@ def bidirectional(do_draw, grid, start, end):
 
         if current_1 in open_set_hash_2:
             current_1.make_path()
-            reconstruct_path(came_from_1, current_1, do_draw)
-            reconstruct_path(came_from_2, current_1, do_draw)
+            await reconstruct_path(came_from_1, current_1, do_draw)
+            await reconstruct_path(came_from_2, current_1, do_draw)
             end.make_end()
             start.make_start()
             return True
@@ -54,6 +56,7 @@ def bidirectional(do_draw, grid, start, end):
                     neighbour.make_open()
 
         do_draw()
+        await asyncio.sleep(0)
 
         if current_1 != start:
             current_1.make_closed()
@@ -63,8 +66,8 @@ def bidirectional(do_draw, grid, start, end):
 
         if current_2 in open_set_hash_1:
             current_2.make_path()
-            reconstruct_path(came_from_1, current_2, do_draw)
-            reconstruct_path(came_from_2, current_2, do_draw)
+            await reconstruct_path(came_from_1, current_2, do_draw)
+            await reconstruct_path(came_from_2, current_2, do_draw)
             end.make_end()
             start.make_start()
             return True
@@ -80,6 +83,7 @@ def bidirectional(do_draw, grid, start, end):
                     neighbour.make_open()
 
         do_draw()
+        await asyncio.sleep(0)
 
         if current_2 != end:
             current_2.make_closed()
